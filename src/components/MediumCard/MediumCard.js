@@ -1,4 +1,5 @@
 import React from "react"
+import { TrashIcon } from "@heroicons/react/outline"
 
 function MediumCard(props) {
   const { message, date, time } = props
@@ -7,7 +8,9 @@ function MediumCard(props) {
       <div className="flex items-center justify-between">
         <p className="w-fit text-gray-500 font-extralight text-xs">{date}</p>
 
-        {/* <TrashIcon handleOnClick={handleOnClick} /> */}
+        <div className="hover:bg-red-400 hover:text-white text-red-400 rounded-full p-1 cursor-pointer transition duration-200 ease-in-out">
+          <TrashIcon className="h-5 w-5" />
+        </div>
       </div>
       <div>
         <p>{message}</p>
