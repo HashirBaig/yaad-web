@@ -2,6 +2,7 @@ import React from "react"
 
 import Header from "./components/Header"
 import Main from "./components/Main"
+import JournalList from "./components/JournalList"
 import Footer from "./components/Footer"
 
 function App() {
@@ -9,11 +10,7 @@ function App() {
     <div className="min-h-screen">
       <Header />
       <Main>
-        <p>Message</p>
-        <p>Message</p>
-        <p>Message</p>
-        <p>Message</p>
-        <p>Message</p>
+        <JournalList />
       </Main>
       <Footer />
     </div>
