@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import PorpTypes from "prop-types"
 import { TrashIcon } from "@heroicons/react/outline"
 import { Spinner } from "../Loaders"
 import { softDeleteJournal } from "../../services/api"
@@ -25,7 +26,7 @@ function MediumCard(props) {
         <p className="w-fit text-gray-500 font-extralight text-xs">{date}</p>
 
         {isLoading ? (
-          <Spinner />
+          <Spinner size={"sm"} color="danger" />
         ) : (
           <div className="delete-icon" onClick={handleOnClick}>
             <TrashIcon className="h-5 w-5" />
@@ -40,6 +41,13 @@ function MediumCard(props) {
       </div>
     </div>
   )
+}
+
+MediumCard.porpTypes = {
+  message: PorpTypes.string.isRequired,
+  date: PorpTypes.string.isRequired,
+  time: PorpTypes.string.isRequired,
+  id: PorpTypes.string.isRequired,
 }
 
 export default MediumCard
