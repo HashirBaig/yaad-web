@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import axios from "axios"
+import { addJournal } from "../../services/api"
 // import { useJournals } from "../../services/swrHooks"
 
 function Footer() {
@@ -14,7 +14,7 @@ function Footer() {
     try {
       const data = { message: value }
       resetForm()
-      const res = await axios.post("http://localhost:5000/api/journal/add-entry", data)
+      const res = await addJournal(data)
       console.log("message sent >>> ", res?.data?.journal)
     } catch (error) {
       console.log(error)

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { TrashIcon } from "@heroicons/react/outline"
-import axios from "axios"
 import { Spinner } from "../Loaders"
+import { softDeleteJournal } from "../../services/api"
 
 function MediumCard(props) {
   const { message, date, time, id } = props
@@ -10,7 +10,7 @@ function MediumCard(props) {
   const handleOnClick = async () => {
     try {
       setIsLoading(true)
-      await axios.post(`http://localhost:5000/api/journal/soft-delete/${id}`)
+      await softDeleteJournal({ id })
     } catch (error) {
       setIsLoading(false)
       console.log(error)
