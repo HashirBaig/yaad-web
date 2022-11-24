@@ -1,16 +1,36 @@
-import React from "react"
+import React, { useState } from "react"
 import { TrashIcon } from "@heroicons/react/outline"
+import axios from "axios"
+import { Spinner } from "../Loaders"
 
 function MediumCard(props) {
-  const { message, date, time } = props
+  const { message, date, time, id } = props
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleOnClick = async () => {
+    try {
+      setIsLoading(true)
+      await axios.post(`http://localhost:5000/api/journal/soft-delete/${id}`)
+    } catch (error) {
+      setIsLoading(false)
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="border px-4 py-3 rounded-lg">
       <div className="flex items-center justify-between">
         <p className="w-fit text-gray-500 font-extralight text-xs">{date}</p>
 
-        <div className="hover:bg-red-400 hover:text-white text-red-400 rounded-full p-1 cursor-pointer transition duration-200 ease-in-out">
-          <TrashIcon className="h-5 w-5" />
-        </div>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <div className="delete-icon" onClick={handleOnClick}>
+            <TrashIcon className="h-5 w-5" />
+          </div>
+        )}
       </div>
       <div>
         <p>{message}</p>
