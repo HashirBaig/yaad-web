@@ -5,9 +5,14 @@ import dayjs from "dayjs"
 
 function JournalList() {
   const { journals } = useJournals()
+  const isScrollbarVisible = journals?.length > 4
 
   return (
-    <div className="w-full h-[440px] space-y-2 py-3 px-4 overflow-hidden overflow-y-scroll">
+    <div
+      className={`w-full sm:h-[480px] md:h-[440px] space-y-2 py-3 px-4 ${
+        isScrollbarVisible ? `overflow-hidden overflow-y-scroll` : `scrollbar-hide`
+      } `}
+    >
       {journals?.map(({ message, createdAt, _id }, idx) => {
         const date = dayjs(new Date(createdAt)).format("DD-MM-YY")
         const time = dayjs(new Date(createdAt)).format("hh:mm A")
