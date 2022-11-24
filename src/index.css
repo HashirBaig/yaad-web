@@ -13,7 +13,7 @@
 
   form,
   .form {
-    @apply fixed bottom-0 w-full flex px-10 py-5 space-x-2 border-t border-gray-300 bg-white;
+    @apply fixed bottom-0 w-full flex px-5 py-5 space-x-2 border-t border-gray-300 bg-white;
   }
 
   input,
