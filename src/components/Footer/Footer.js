@@ -23,7 +23,7 @@ function Footer() {
 
   return (
     <footer className="sticky bottom-0">
-      <form onSubmit={handleOnSubmit}>
+      <form className="journal-entry-form" onSubmit={handleOnSubmit}>
         <input type="text" value={value} onChange={e => setValue(e.target.value)} />
         <button className="btn hidden sm:block" type="submit" disabled={!value}>
           Send
