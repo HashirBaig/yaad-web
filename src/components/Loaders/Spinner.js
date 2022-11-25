@@ -4,7 +4,7 @@ import { getSpinnerColor, getSpinnerSize } from "../../utils/common"
 
 function Spinner({ size, color }) {
   return (
-    <div role="status" className="flex min-h-full items-center justify-center">
+    <div role="status" className="flex min-h-full items-center justify-center px-2">
       <svg
         aria-hidden="true"
         className={`mr-2 ${getSpinnerSize(size)} text-gray-200 animate-spin ${getSpinnerColor(color)}`}

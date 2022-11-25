@@ -17,8 +17,8 @@ const api = axios.create(baseConfig)
 api.interceptors.request.use(config => {
   if (localStorage.token) {
     config.headers["x-auth-token"] = localStorage.token
-    // config.headers.common["x-auth-token"] = localStorage.token
   }
+
   return config
 })
 
@@ -31,9 +31,13 @@ api.interceptors.request.use(config => {
 **/
 
 api.interceptors.response.use(
-  res => res,
+  res => {
+    console.log("token valid")
+    return res
+  },
   err => {
     if (err.message.includes(401)) {
+      console.log("token expired")
       logout()
     }
     return Promise.reject(err)
@@ -41,7 +45,7 @@ api.interceptors.response.use(
 )
 
 //--- AUTH ---//
-function setAuthToken(token) {
+export function setAuthToken(token) {
   if (token) {
     api.defaults.headers.common["x-auth-token"] = token
     localStorage.setItem("token", token)
@@ -56,7 +60,6 @@ export async function login(credentials) {
     const res = await userLogin(credentials)
     const token = res?.data?.token
     setAuthToken(token)
-    return true
   } catch (error) {
     console.log(error)
   }
@@ -73,11 +76,10 @@ export async function getCurrentUser() {
   return api.get(`${apiURLs.AUTH}`)
 }
 
-export async function loadUser() {
-  await getCurrentUser()
-  const token = localStorage.token
+export async function loadUser({ token }) {
+  const res = await getCurrentUser()
   setAuthToken(token)
-  return { isAuth: true }
+  return res
 }
 
 //--- JOURNAL ---//
