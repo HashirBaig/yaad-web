@@ -8,7 +8,7 @@ import { getCurrentUser, setAuthToken } from "../services/api"
 function PrivateRoutes() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const isTokenAuthenticated = useSelector(state => state.auth.isTokenAuthenticated)
+  const isAuth = useSelector(state => state.auth.isAuth)
 
   const checkForToken = async () => {
     //Check for token
@@ -16,12 +16,12 @@ function PrivateRoutes() {
       const token = localStorage.token
       await getCurrentUser()
       setAuthToken(token)
-      dispatch(authenticate({ isTokenAuthenticated: true }))
+      dispatch(authenticate({ isAuth: true }))
       navigate(AllRoutesMap.home)
     } catch (error) {
       console.log(error)
       // Redirect back to sign-in page
-      dispatch(authenticate({ isTokenAuthenticated: false }))
+      dispatch(authenticate({ isAuth: false }))
       navigate(AllRoutesMap.signIn)
     }
   }
@@ -32,9 +32,9 @@ function PrivateRoutes() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return isTokenAuthenticated ? (
+  return isAuth ? (
     <Outlet />
-  ) : !isTokenAuthenticated && localStorage.token ? ( // Refactor: Not sure if token has expired
+  ) : !isAuth && localStorage.token ? ( // Refactor: Not sure if token has expired
     <div className="w-full min-h-screen flex items-center justify-center">
       <img className="h-20 w-20 border rounded-xl animate-pulse" src="/assets/images/yaad-logo.png" alt="Yaad Logo" />
     </div>

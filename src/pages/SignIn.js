@@ -34,7 +34,7 @@ function SignIn() {
       setIsLoading(true)
       const credentials = { ...formData }
       await login(credentials)
-      dispatch(authenticate({ isTokenAuthenticated: true }))
+      dispatch(authenticate({ isAuth: true }))
       navigate(AllRoutesMap.home)
     } catch (error) {
       console.log(error)
