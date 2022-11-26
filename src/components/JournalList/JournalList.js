@@ -10,7 +10,7 @@ function JournalList() {
 
   return (
     <div
-      className={`w-full sm:h-[480px] md:h-[440px] space-y-2 py-3 px-4 ${
+      className={`w-full h-[545px]  md:h-[455px] space-y-2 py-3 px-4 ${
         isScrollbarVisible ? `overflow-hidden overflow-y-scroll` : `scrollbar-hide`
       } `}
     >

@@ -1,19 +1,19 @@
 import React from "react"
-
-import Header from "./components/Header"
-import Main from "./components/Main"
-import JournalList from "./components/JournalList"
-import Footer from "./components/Footer"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { SignIn, Home } from "./pages"
+import { AllRoutesMap } from "./routes/RoutesConfig"
+import PrivateRoutes from "./routes/PrivateRoutes"
 
 function App() {
   return (
-    <div className="min-h-screen">
-      <Header />
-      <Main>
-        <JournalList />
-      </Main>
-      <Footer />
-    </div>
+    <Router>
+      <Routes>
+        <Route element={<PrivateRoutes />}>
+          <Route path={AllRoutesMap.home} element={<Home />} exact />
+        </Route>
+        <Route path={AllRoutesMap.signIn} element={<SignIn />} exact />
+      </Routes>
+    </Router>
   )
 }
 
