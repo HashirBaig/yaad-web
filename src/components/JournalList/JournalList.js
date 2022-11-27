@@ -1,11 +1,23 @@
-import React from "react"
+import React, { useEffect } from "react"
 import MediumCard from "../MediumCard"
 import dayjs from "dayjs"
 import { Spinner } from "../Loaders"
+import { useDispatch, useSelector } from "react-redux"
+import { getAllJournalsByUser } from "../../redux/features/journal/journalSlice"
 
 function JournalList() {
-  const journals = []
-  const isLoading = false
+  const { journals, isLoading, isError, message } = useSelector(state => state.journal)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (isError) {
+      console.log("Error: ", message)
+    }
+    dispatch(getAllJournalsByUser())
+
+    // eslint-disable-next-line
+  }, [])
+
   const isScrollbarVisible = journals?.length > 4
 
   return (

@@ -3,7 +3,7 @@ import authService from "../services/api"
 
 // Get token from localStorage
 const token = localStorage.token
-console.log("token: ", token)
+
 const intialState = {
   user: token ? token : null,
   isLoading: false,

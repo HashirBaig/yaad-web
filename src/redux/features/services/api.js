@@ -13,6 +13,15 @@ const baseConfig = {
 //Basic configuration for HTTP calls
 const api = axios.create(baseConfig)
 
+api.interceptors.request.use(config => {
+  const token = `${localStorage.token}`
+  if (token) {
+    config.headers["x-auth-token"] = token
+  }
+
+  return config
+})
+
 //--- AUTH ---//
 function setAuthToken(token) {
   if (token) {
@@ -57,11 +66,11 @@ async function addJournal(data) {
   return api.post(`${apiURLs.JOURNAL}/add-entry`, data)
 }
 
-async function getJournals() {
+async function getAllJournalsByUser(token) {
   return api.get(`${apiURLs.JOURNAL}`)
 }
 
-async function softDeleteJournal({ id }) {
+async function softDeleteJournal(id) {
   return api.post(`${apiURLs.JOURNAL}/soft-delete/${id}`)
 }
 
@@ -76,7 +85,7 @@ const authService = {
   userLogin,
   loadUser,
   addJournal,
-  getJournals,
+  getAllJournalsByUser,
   softDeleteJournal,
   addUser,
 }

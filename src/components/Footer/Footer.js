@@ -1,12 +1,18 @@
 import React, { useState } from "react"
+import { useDispatch } from "react-redux"
+import { createJournal, reset } from "../../redux/features/journal/journalSlice"
 
 function Footer() {
   const [value, setValue] = useState("")
+  const dispatch = useDispatch()
 
   const handleOnSubmit = async e => {
     e.preventDefault()
     try {
-      console.log("add journal")
+      const data = { message: value }
+      dispatch(createJournal(data))
+      dispatch(reset())
+      setValue("")
     } catch (error) {
       console.log(error)
     }

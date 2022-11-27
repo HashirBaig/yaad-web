@@ -1,22 +1,21 @@
-import React, { useState } from "react"
+import React from "react"
 import PorpTypes from "prop-types"
 import { TrashIcon } from "@heroicons/react/outline"
 import { Spinner } from "../Loaders"
+import { useDispatch, useSelector } from "react-redux"
+import { softDeleteJournal, reset } from "../../redux/features/journal/journalSlice"
 
 function MediumCard(props) {
   const { message, date, time, id } = props
-  const [isLoading, setIsLoading] = useState(false)
+  const dispatch = useDispatch()
+  const { isLoading } = useSelector(state => state.journal)
 
   const handleOnClick = async () => {
     try {
-      setIsLoading(true)
-      console.log("Soft delete journal with id: ", id)
-      // await softDeleteJournal({ id })
+      dispatch(softDeleteJournal(id))
+      dispatch(reset())
     } catch (error) {
-      setIsLoading(false)
       console.log(error)
-    } finally {
-      setIsLoading(false)
     }
   }
 
