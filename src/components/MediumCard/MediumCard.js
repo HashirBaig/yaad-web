@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import PorpTypes from "prop-types"
 import { TrashIcon } from "@heroicons/react/outline"
 import { Spinner } from "../Loaders"
-import { softDeleteJournal } from "../../services/api"
 
 function MediumCard(props) {
   const { message, date, time, id } = props
@@ -11,7 +10,8 @@ function MediumCard(props) {
   const handleOnClick = async () => {
     try {
       setIsLoading(true)
-      await softDeleteJournal({ id })
+      console.log("Soft delete journal with id: ", id)
+      // await softDeleteJournal({ id })
     } catch (error) {
       setIsLoading(false)
       console.log(error)

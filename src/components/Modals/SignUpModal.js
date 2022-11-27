@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form"
 import { Dialog, Transition } from "@headlessui/react"
 import RequiredFieldMark from "../RequiredFieldMark"
 import { XIcon } from "@heroicons/react/solid"
-import { addUser } from "../../services/api"
 
 const schema = yup.object().shape({
   username: yup.string().required("Username is required"),
@@ -27,7 +26,7 @@ export default function SignUpModal({ toggle, isOpen, setIsOpen }) {
 
   const onSubmit = async formData => {
     try {
-      await addUser(formData)
+      console.log(console.log("add/register new user"))
       reset()
       toggle()
     } catch (error) {

@@ -1,11 +1,11 @@
 import React from "react"
 import MediumCard from "../MediumCard"
-import { useJournals } from "../../services/swrHooks"
 import dayjs from "dayjs"
 import { Spinner } from "../Loaders"
 
 function JournalList() {
-  const { journals, isLoading } = useJournals()
+  const journals = []
+  const isLoading = false
   const isScrollbarVisible = journals?.length > 4
 
   return (
