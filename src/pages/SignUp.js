@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useNavigate, Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import { login, reset } from "../redux/features/auth/authSlice"
+import { addUser, reset } from "../redux/features/auth/authSlice"
 import { AllRoutesMap } from "../routes/RoutesConfig"
 import { Spinner } from "../components/Loaders"
 import RequiredFieldMark from "../components/RequiredFieldMark"
@@ -34,7 +34,7 @@ function SignUp() {
 
   const onSubmit = formData => {
     try {
-      dispatch(login(formData))
+      dispatch(addUser(formData))
     } catch (error) {
       console.log(error)
     }
