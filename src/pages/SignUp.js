@@ -45,7 +45,7 @@ function SignUp() {
     mode: "onBlur",
     defaultValues: {
       username: "",
-      email: "",
+      email: "@gmail.com",
       password: "",
     },
   })
