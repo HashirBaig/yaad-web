@@ -31,7 +31,6 @@ function Home() {
       <Main>
         <Journal />
       </Main>
-      {/* <Footer /> */}
     </div>
   )
 }
