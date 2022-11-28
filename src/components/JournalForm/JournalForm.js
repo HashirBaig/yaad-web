@@ -30,7 +30,7 @@ function JournalForm({ initSearch }) {
   return (
     <div className="sticky bottom-0">
       <form className="journal-entry-form" onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" name="message" {...register("message")} />
+        <input type="text" name="message" autoComplete="off" {...register("message")} />
         <button className="btn hidden sm:block" type="submit">
           Send
         </button>
