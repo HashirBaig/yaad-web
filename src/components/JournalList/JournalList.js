@@ -1,26 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import MediumCard from "../MediumCard"
 import dayjs from "dayjs"
 import { Spinner } from "../Loaders"
-import { getAllJournalsByUser } from "../../redux/features/services/api"
 
-function JournalList() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [journals, setJournals] = useState([])
-
-  const initSearch = async () => {
-    try {
-      setIsLoading(true)
-      const res = await getAllJournalsByUser()
-      setJournals(res?.data?.journals)
-    } catch (error) {
-      console.log(error || error?.message)
-      setIsLoading(false)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
+function JournalList({ initSearch, journals, isLoading }) {
   useEffect(() => {
     initSearch()
 
