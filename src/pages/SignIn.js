@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { login, reset } from "../redux/features/auth/authSlice"
 import { AllRoutesMap } from "../routes/RoutesConfig"
 import { Spinner } from "../components/Loaders"
+import RequiredFieldMark from "../components/RequiredFieldMark"
 
 const schema = yup.object().shape({
   email: yup.string().required("Email is required"),
@@ -52,11 +53,17 @@ function SignIn() {
       <div className="w-[25rem] border px-4 py-3 rounded-lg">
         <form className="space-y-5" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">
+              Email
+              <RequiredFieldMark />
+            </label>
             <input type="email" placeholder="abc@example.com" {...register("email")} />
           </div>
           <div className="form-group">
-            <label htmlFor="email">Password</label>
+            <label htmlFor="email">
+              Password
+              <RequiredFieldMark />
+            </label>
             <input type="password" {...register("password")} />
           </div>
           <button className="btn-form" type="submit">
