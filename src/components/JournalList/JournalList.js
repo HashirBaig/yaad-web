@@ -1,19 +1,28 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import MediumCard from "../MediumCard"
 import dayjs from "dayjs"
 import { Spinner } from "../Loaders"
-import { useDispatch, useSelector } from "react-redux"
-import { getAllJournalsByUser } from "../../redux/features/journal/journalSlice"
+import { getAllJournalsByUser } from "../../redux/features/services/api"
 
 function JournalList() {
-  const { journals, isLoading, isError, message } = useSelector(state => state.journal)
-  const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(false)
+  const [journals, setJournals] = useState([])
+
+  const initSearch = async () => {
+    try {
+      setIsLoading(true)
+      const res = await getAllJournalsByUser()
+      setJournals(res?.data?.journals)
+    } catch (error) {
+      console.log(error || error?.message)
+      setIsLoading(false)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
-    if (isError) {
-      console.log("Error: ", message)
-    }
-    dispatch(getAllJournalsByUser())
+    initSearch()
 
     // eslint-disable-next-line
   }, [])
@@ -32,7 +41,16 @@ function JournalList() {
         journals?.map(({ message, createdAt, _id }, idx) => {
           const date = dayjs(new Date(createdAt)).format("DD-MM-YY")
           const time = dayjs(new Date(createdAt)).format("hh:mm A")
-          return <MediumCard message={message} date={date} time={time} id={_id} key={`journal-${_id}-${idx}`} />
+          return (
+            <MediumCard
+              message={message}
+              date={date}
+              time={time}
+              id={_id}
+              key={`journal-${_id}-${idx}`}
+              initSearch={() => initSearch()}
+            />
+          )
         })}
     </div>
   )

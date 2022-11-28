@@ -22,6 +22,24 @@ api.interceptors.request.use(config => {
   return config
 })
 
+/**
+ intercept any error responses from the api
+ and check if the token is no longer valid.
+ ie. Token has expired or user is no longer
+ authenticated.
+ logout the user if the token has expired
+**/
+
+api.interceptors.response.use(
+  res => res,
+  err => {
+    if (err.message.includes(401)) {
+      logout()
+    }
+    return Promise.reject(err)
+  }
+)
+
 //--- AUTH ---//
 function setAuthToken(token) {
   if (token) {
@@ -62,20 +80,20 @@ async function loadUser({ token }) {
 }
 
 //--- JOURNAL ---//
-async function addJournal(data) {
+export async function addJournal(data) {
   return api.post(`${apiURLs.JOURNAL}/add-entry`, data)
 }
 
-async function getAllJournalsByUser(token) {
+export async function getAllJournalsByUser(token) {
   return api.get(`${apiURLs.JOURNAL}`)
 }
 
-async function softDeleteJournal(id) {
+export async function softDeleteJournal(id) {
   return api.post(`${apiURLs.JOURNAL}/soft-delete/${id}`)
 }
 
 //--- USER ---//
-async function addUser(data) {
+export async function addUser(data) {
   return api.post(`${apiURLs.USER}/add-user`, data)
 }
 
