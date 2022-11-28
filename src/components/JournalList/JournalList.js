@@ -28,13 +28,12 @@ function JournalList({ initSearch, journals, isLoading }) {
         journals.length > 0 &&
         journals?.map(({ message, createdAt, _id }, idx) => {
           const date = dayjs(new Date(createdAt)).format("DD-MM-YY")
-          const time = dayjs(new Date(createdAt)).format("hh:mm A")
           return (
             <MediumCard
               message={message}
               date={date}
-              time={time}
               id={_id}
+              createdAt={createdAt}
               key={`journal-${_id}-${idx}`}
               initSearch={() => initSearch()}
             />

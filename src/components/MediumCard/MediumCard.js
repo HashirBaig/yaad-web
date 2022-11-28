@@ -1,12 +1,13 @@
 import React, { useState } from "react"
 import PorpTypes from "prop-types"
+import TimeAgo from "react-timeago"
 import { TrashIcon } from "@heroicons/react/outline"
 import { Spinner } from "../Loaders"
 import { softDeleteJournal } from "../../redux/features/services/api"
 
 function MediumCard(props) {
   const [isLoading, setIsLoading] = useState(false)
-  const { message, date, time, id, initSearch } = props
+  const { message, date, id, createdAt, initSearch } = props
 
   const handleOnClick = async () => {
     try {
@@ -38,7 +39,10 @@ function MediumCard(props) {
         <p>{message}</p>
       </div>
       <div className="flex justify-end">
-        <p className="w-fit text-gray-500 font-extralight text-xs">{time}</p>
+        {/* <p className="w-fit text-gray-500 font-extralight text-xs">{time}</p> */}
+        <p className="w-fit text-gray-500 font-extralight text-xs">
+          <TimeAgo date={new Date(createdAt)} />
+        </p>
       </div>
     </div>
   )
@@ -46,8 +50,8 @@ function MediumCard(props) {
 
 MediumCard.porpTypes = {
   message: PorpTypes.string.isRequired,
+  createdAt: PorpTypes.string.isRequired,
   date: PorpTypes.string.isRequired,
-  time: PorpTypes.string.isRequired,
   id: PorpTypes.string.isRequired,
 }
 
