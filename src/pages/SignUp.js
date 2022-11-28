@@ -10,18 +10,19 @@ import { Spinner } from "../components/Loaders"
 import RequiredFieldMark from "../components/RequiredFieldMark"
 
 const schema = yup.object().shape({
+  username: yup.string().required("Email is required"),
   email: yup.string().required("Email is required"),
   password: yup.string().required("Password is required"),
 })
 
-function SignIn() {
+function SignUp() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user, isLoading, isSuccess, isError, message } = useSelector(state => state.auth)
 
   useEffect(() => {
     if (isError) {
-      console.log("Error >>> ", message)
+      console.log("error with message >>> ", message)
     }
 
     if (isSuccess && user) {
@@ -43,6 +44,7 @@ function SignIn() {
     resolver: yupResolver(schema),
     mode: "onBlur",
     defaultValues: {
+      username: "",
       email: "",
       password: "",
     },
@@ -52,6 +54,13 @@ function SignIn() {
     <div className="w-full min-h-screen flex items-center justify-center">
       <div className="w-[25rem] border px-4 py-3 rounded-lg">
         <form className="space-y-5" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+          <div className="form-group">
+            <label htmlFor="username">
+              Username
+              <RequiredFieldMark />
+            </label>
+            <input type="text" placeholder="john_elliot@123" {...register("username")} />
+          </div>
           <div className="form-group">
             <label htmlFor="email">
               Email
@@ -73,9 +82,9 @@ function SignIn() {
         </form>
         <div className="mt-20">
           <p className="text-sm text-gray-500 text-center">
-            Don't have an account?{" "}
-            <Link className="btn-link" to={AllRoutesMap.signUp}>
-              Sign Up
+            Already have an account?{" "}
+            <Link className="btn-link" to={AllRoutesMap.signIn}>
+              Sign In
             </Link>
           </p>
         </div>
@@ -84,4 +93,4 @@ function SignIn() {
   )
 }
 
-export default SignIn
+export default SignUp
