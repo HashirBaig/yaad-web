@@ -93,7 +93,7 @@ export async function softDeleteJournal(id) {
 }
 
 //--- USER ---//
-export async function addUser(data) {
+async function addUser(data) {
   return api.post(`${apiURLs.USER}/add-user`, data)
 }
 
@@ -106,6 +106,7 @@ const authService = {
   getAllJournalsByUser,
   softDeleteJournal,
   addUser,
+  setAuthToken,
 }
 
 export default authService
