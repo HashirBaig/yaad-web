@@ -1,14 +1,12 @@
-import React, { useState } from "react"
+import { useEffect } from "react"
 import * as yup from "yup"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
-
-import { login } from "../services/api"
-import { Spinner } from "../components/Loaders"
+import { useSelector, useDispatch } from "react-redux"
+import { login, reset } from "../redux/features/auth/authSlice"
 import { AllRoutesMap } from "../routes/RoutesConfig"
-import { authenticate } from "../redux/features/auth/authSlice"
+import { Spinner } from "../components/Loaders"
 
 const schema = yup.object().shape({
   email: yup.string().required("Email is required"),
@@ -16,9 +14,29 @@ const schema = yup.object().shape({
 })
 
 function SignIn() {
-  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { user, isLoading, isSuccess, isError, message } = useSelector(state => state.auth)
+
+  useEffect(() => {
+    if (isError) {
+      console.log("Error >>> ", message)
+    }
+
+    if (isSuccess && user) {
+      navigate(AllRoutesMap.home)
+    }
+
+    dispatch(reset())
+  }, [user, isError, message, isSuccess, navigate, dispatch])
+
+  const onSubmit = formData => {
+    try {
+      dispatch(login(formData))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema),
@@ -28,21 +46,6 @@ function SignIn() {
       password: "",
     },
   })
-
-  const onSubmit = async formData => {
-    try {
-      setIsLoading(true)
-      const credentials = { ...formData }
-      await login(credentials)
-      dispatch(authenticate({ isAuth: true }))
-      navigate(AllRoutesMap.home)
-    } catch (error) {
-      console.log(error)
-      setIsLoading(false)
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center">
@@ -58,7 +61,7 @@ function SignIn() {
           </div>
           <button className="btn-form" type="submit">
             Sign In
-            {isLoading && <Spinner size={"sm"} color={"light"} />}
+            {isLoading && <Spinner size={"sm"} />}
           </button>
         </form>
         <div className="mt-20">

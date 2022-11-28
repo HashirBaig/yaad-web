@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { SignUpModal } from "../Modals"
+import { LogoutModal } from "../Modals"
 import { UserCircleIcon } from "@heroicons/react/solid"
 
 function Header() {
@@ -16,7 +16,7 @@ function Header() {
         </div>
       </header>
       {isOpenSignUModal && (
-        <SignUpModal toggle={toggleSignUpModal} isOpen={isOpenSignUModal} setIsOpen={setIsOpenSignUModal} />
+        <LogoutModal toggle={toggleSignUpModal} isOpen={isOpenSignUModal} setIsOpen={setIsOpenSignUModal} />
       )}
     </>
   )

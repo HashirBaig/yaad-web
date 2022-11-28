@@ -1,10 +1,7 @@
 import React, { useState } from "react"
-import { addJournal } from "../../services/api"
-// import { useJournals } from "../../services/swrHooks"
+import { addJournal } from "../../redux/features/services/api"
 
 function Footer() {
-  // const { journals } = useJournals()
-  // console.log("journals: ", journals)
   const [value, setValue] = useState("")
 
   const resetForm = () => setValue("")
@@ -14,8 +11,7 @@ function Footer() {
     try {
       const data = { message: value }
       resetForm()
-      const res = await addJournal(data)
-      console.log("message sent >>> ", res?.data?.journal)
+      await addJournal(data)
     } catch (error) {
       console.log(error)
     }

@@ -2,16 +2,17 @@ import React, { useState } from "react"
 import PorpTypes from "prop-types"
 import { TrashIcon } from "@heroicons/react/outline"
 import { Spinner } from "../Loaders"
-import { softDeleteJournal } from "../../services/api"
+import { softDeleteJournal } from "../../redux/features/services/api"
 
 function MediumCard(props) {
-  const { message, date, time, id } = props
   const [isLoading, setIsLoading] = useState(false)
+  const { message, date, time, id, initSearch } = props
 
   const handleOnClick = async () => {
     try {
       setIsLoading(true)
-      await softDeleteJournal({ id })
+      await softDeleteJournal(id)
+      initSearch()
     } catch (error) {
       setIsLoading(false)
       console.log(error)
