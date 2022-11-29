@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { LogoutModal } from "../Modals"
-import { UserCircleIcon } from "@heroicons/react/solid"
+import { ArrowCircleRightIcon } from "@heroicons/react/outline"
 
 function Header() {
   const [isOpenSignUModal, setIsOpenSignUModal] = useState(false)
@@ -11,8 +11,9 @@ function Header() {
       <header className="sticky top-0 z-50 px-4 py-3 shadow-md bg-white">
         <div className="flex items-center justify-between">
           <img className="h-12 w-12" src="/assets/images/yaad-logo.png" alt="Yaad Logo" />
-
-          <UserCircleIcon className="h-12 w-12 text-gray-500 cursor-pointer" onClick={toggleSignUpModal} />
+          <div onClick={toggleSignUpModal} title={"Logout"}>
+            <ArrowCircleRightIcon className="h-9 w-9 text-red-400 hover:text-red-500 cursor-pointer" />
+          </div>
         </div>
       </header>
       {isOpenSignUModal && (
