@@ -88,6 +88,11 @@ export async function getAllJournalsByUser(token) {
   return api.get(`${apiURLs.JOURNAL}`)
 }
 
+export async function updateJournal(params) {
+  const { id, ...data } = params
+  return api.put(`${apiURLs.JOURNAL}/update-journal/${id}`, data)
+}
+
 export async function softDeleteJournal(id) {
   return api.post(`${apiURLs.JOURNAL}/soft-delete/${id}`)
 }

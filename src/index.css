@@ -29,9 +29,17 @@
     @apply w-full space-y-2;
   }
 
+  .action-icon {
+    @apply p-1 cursor-pointer transition duration-200 ease-in-out;
+  }
+
+  .edit-icon {
+    @apply hover:bg-blue-400 hover:text-white text-blue-400 rounded-full;
+  }
+
   .delete-icon,
   .close-btn {
-    @apply hover:bg-red-400 hover:text-white text-red-400 rounded-full p-1 cursor-pointer transition duration-200 ease-in-out;
+    @apply hover:bg-red-400 hover:text-white text-red-400 rounded-full;
   }
 
   .btn-link {

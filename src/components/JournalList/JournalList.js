@@ -1,14 +1,12 @@
-import React, { useEffect } from "react"
-import MediumCard from "../MediumCard"
+import PorpTypes from "prop-types"
+import { useSelector } from "react-redux"
 import dayjs from "dayjs"
+
+import MediumCard from "../MediumCard"
 import { Spinner } from "../Loaders"
 
-function JournalList({ initSearch, journals, isLoading }) {
-  useEffect(() => {
-    initSearch()
-
-    // eslint-disable-next-line
-  }, [])
+function JournalList({ initSearch, isLoading }) {
+  const { journals } = useSelector(state => state.journal)
 
   const isScrollbarVisible = journals?.length > 4
 
@@ -26,7 +24,7 @@ function JournalList({ initSearch, journals, isLoading }) {
       )}
       {!isLoading &&
         journals.length > 0 &&
-        journals?.map(({ message, createdAt, _id }, idx) => {
+        journals?.map(({ message, createdAt, _id, isContentEditable, isEdited }, idx) => {
           const date = dayjs(new Date(createdAt)).format("DD-MM-YY")
           return (
             <MediumCard
@@ -34,6 +32,8 @@ function JournalList({ initSearch, journals, isLoading }) {
               date={date}
               id={_id}
               createdAt={createdAt}
+              isContentEditable={isContentEditable}
+              isEdited={isEdited}
               key={`journal-${_id}-${idx}`}
               initSearch={() => initSearch()}
             />
@@ -41,6 +41,11 @@ function JournalList({ initSearch, journals, isLoading }) {
         })}
     </div>
   )
+}
+
+JournalList.porpTypes = {
+  isLoading: PorpTypes.bool.isRequired,
+  initSearch: PorpTypes.func.isRequired,
 }
 
 export default JournalList
