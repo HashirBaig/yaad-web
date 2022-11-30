@@ -17,7 +17,7 @@ const schema = yup.object().shape({
 })
 
 function MediumCard(props) {
-  const { message, date, id, createdAt, isContentEditable, isEdited, initSearch } = props
+  const { message, date, id, createdAt, isContentEditable, initSearch } = props
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
 
@@ -74,7 +74,6 @@ function MediumCard(props) {
     <div className="border px-4 py-3 rounded-lg">
       <div className="flex items-center justify-between">
         <p className="w-fit text-gray-500 font-extralight text-xs">{date}</p>
-        <p className="w-fit text-gray-400 font-medium italic text-xs">{isEdited && "(Edited)"}</p>
 
         <div className="flex ">
           {!isContentEditable && (
