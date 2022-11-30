@@ -9,6 +9,7 @@ const dimensions = {
 const colorThemes = {
   primary: "fill-blue-600",
   danger: "fill-red-400",
+  success: "fill-green-400",
   light: "fill-white",
 }
 
