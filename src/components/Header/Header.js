@@ -8,7 +8,7 @@ function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 px-4 py-3 shadow-md bg-white">
+      <header className="sticky top-0 z-50 px-4 py-2 shadow-md bg-white">
         <div className="flex items-center justify-between">
           <img className="h-12 w-12" src="/assets/images/yaad-logo.png" alt="Yaad Logo" />
           <div onClick={toggleSignUpModal} title={"Logout"}>
