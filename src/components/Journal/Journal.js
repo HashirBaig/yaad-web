@@ -7,8 +7,9 @@ import { useForm } from "react-hook-form"
 import JournalList from "../JournalList"
 import JournalForm from "../JournalForm"
 
-import { getAllJournalsByUser, addJournal } from "../../redux/features/services/api"
+import { getAllJournalsByUser, addJournal, getStreakByUser } from "../../redux/features/services/api"
 import { setJournals } from "../../redux/features/journal/journalSlice"
+import { setStreak } from "../../redux/features/streak/streakSlice"
 
 const schema = yup.object().shape({
   message: yup.string(),
@@ -30,8 +31,11 @@ function Journal() {
     try {
       setIsLoading(true)
       const res = await getAllJournalsByUser()
+      const streakRes = await getStreakByUser()
+      const streak = streakRes?.data?.streak
       const data = dataPrep(res?.data?.journals)
       dispatch(setJournals(data))
+      dispatch(setStreak(streak))
     } catch (error) {
       console.log(error || error?.message)
       setIsLoading(false)
