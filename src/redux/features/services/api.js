@@ -34,6 +34,7 @@ api.interceptors.response.use(
   res => res,
   err => {
     if (err.message.includes(401)) {
+      console.log("auth token expired")
       logout()
     }
     return Promise.reject(err)
@@ -100,6 +101,11 @@ export async function softDeleteJournal(id) {
 //--- USER ---//
 async function addUser(data) {
   return api.post(`${apiURLs.USER}/add-user`, data)
+}
+
+//--- STREAK ---//
+export async function getStreakByUser() {
+  return api.get(`${apiURLs.STREAK}`)
 }
 
 const authService = {
