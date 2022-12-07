@@ -3,7 +3,7 @@ const dev = {
 }
 
 const prod = {
-  API_URL: "http://ec2-54-64-48-118.ap-northeast-1.compute.amazonaws.com:80/api",
+  API_URL: "http://ec2-15-207-249-134.ap-south-1.compute.amazonaws.com:443/api",
 }
 
 const config = process.env.NODE_ENV === "production" ? prod : dev
