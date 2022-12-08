@@ -113,7 +113,7 @@ function MediumCard(props) {
             </div>
           </form>
         ) : (
-          <p>{message}</p>
+          <p onDoubleClick={toggleJournalEdit}>{message}</p>
         )}
       </div>
       <div className="flex justify-end">
