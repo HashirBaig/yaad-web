@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import authService from "../services/api"
+import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth"
+import { auth } from "../../../config/firebase"
 
 // Get token from localStorage
-const token = localStorage.token
+// const token = localStorage.token
 
 const intialState = {
-  user: token ? token : null,
+  user: {},
   isLoading: false,
   isSuccess: false,
   isError: false,
@@ -13,9 +14,10 @@ const intialState = {
 }
 
 //--- LOGIN THUNK ---//
-export const login = createAsyncThunk("auth/login", async (data, thunkAPI) => {
+export const login = createAsyncThunk("auth/login", async ({ email, password }, thunkAPI) => {
   try {
-    return await authService.login(data)
+    const res = await signInWithEmailAndPassword(auth, email, password)
+    return res?.user
   } catch (error) {
     const message = error?.message || error
     thunkAPI.rejectWithValue(message)
@@ -25,7 +27,7 @@ export const login = createAsyncThunk("auth/login", async (data, thunkAPI) => {
 //--- LOGOUT THUNK ---//
 export const logout = createAsyncThunk("auth/logout", async (data, thunkAPI) => {
   try {
-    return await authService.logout()
+    await signOut(auth)
   } catch (error) {
     const message = error?.message || error
     thunkAPI.rejectWithValue(message)
@@ -33,9 +35,9 @@ export const logout = createAsyncThunk("auth/logout", async (data, thunkAPI) => 
 })
 
 //--- REGISTER/SIGN-UP THUNK ---//
-export const addUser = createAsyncThunk("auth/addUser", async (data, thunkAPI) => {
+export const addUser = createAsyncThunk("auth/addUser", async ({ email, password }, thunkAPI) => {
   try {
-    return await authService.addUser(data)
+    return await createUserWithEmailAndPassword(auth, email, password)
   } catch (error) {
     const message = error?.message || error
     thunkAPI.rejectWithValue(message)
@@ -51,6 +53,9 @@ const authSlice = createSlice({
       state.isSuccess = false
       state.isError = false
       state.message = ""
+    },
+    loadUser: (state, action) => {
+      state.user = action.payload
     },
   },
   extraReducers: builder => {
@@ -76,9 +81,6 @@ const authSlice = createSlice({
         state.isLoading = true
       })
       .addCase(addUser.fulfilled, (state, action) => {
-        const token = action.payload?.data?.token
-        authService.setAuthToken(token)
-
         state.isLoading = false
         state.isSuccess = true
         state.user = action.payload
@@ -92,5 +94,5 @@ const authSlice = createSlice({
   },
 })
 
-export const { reset } = authSlice.actions
+export const { reset, loadUser } = authSlice.actions
 export default authSlice.reducer

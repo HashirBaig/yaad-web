@@ -1,41 +1,25 @@
 import { useState, useEffect } from "react"
-import { useDispatch } from "react-redux"
-import * as yup from "yup"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { useForm } from "react-hook-form"
+import { useDispatch, useSelector } from "react-redux"
+import { getAllJournalsByUser } from "../../redux/features/services/api"
+import { setJournals } from "../../redux/features/journal/journalSlice"
 
 import JournalList from "../JournalList"
 import JournalForm from "../JournalForm"
 
-import { getAllJournalsByUser, addJournal, getStreakByUser } from "../../redux/features/services/api"
-import { setJournals } from "../../redux/features/journal/journalSlice"
-import { setStreak } from "../../redux/features/streak/streakSlice"
-
-const schema = yup.object().shape({
-  message: yup.string(),
-})
-
 function Journal() {
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
-
-  const { register, handleSubmit, reset } = useForm({
-    resolver: yupResolver(schema),
-    mode: "onBlur",
-    defaultValues: {
-      message: "",
-    },
-  })
+  const { user } = useSelector(state => state.auth)
 
   const initSearch = async () => {
     try {
       setIsLoading(true)
-      const res = await getAllJournalsByUser()
-      const streakRes = await getStreakByUser()
-      const streak = streakRes?.data?.streak
-      const data = dataPrep(res?.data?.journals)
+      const res = await getAllJournalsByUser(user?.email)
+      // const streakRes = await getStreakByUser()
+      // const streak = streakRes?.data?.streak
+      const data = dataPrep(res)
       dispatch(setJournals(data))
-      dispatch(setStreak(streak))
+      // dispatch(setStreak(streak))
     } catch (error) {
       console.log(error || error?.message)
       setIsLoading(false)
@@ -52,23 +36,12 @@ function Journal() {
     initSearch()
 
     // eslint-disable-next-line
-  }, [])
-
-  const onSubmit = async formData => {
-    try {
-      const data = { ...formData }
-      reset()
-      await addJournal(data)
-      initSearch()
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  }, [user])
 
   return (
     <div>
-      <JournalList initSearch={() => initSearch()} isLoading={isLoading} />
-      <JournalForm handleSubmit={handleSubmit(onSubmit)} register={register} />
+      <JournalList isLoading={isLoading} initSearch={() => initSearch()} />
+      <JournalForm initSearch={() => initSearch()} />
     </div>
   )
 }

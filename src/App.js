@@ -3,11 +3,24 @@ import { Routes, Route, useNavigate } from "react-router-dom"
 import { SignIn, Home, SignUp } from "./pages"
 import { AllRoutesMap } from "./routes/RoutesConfig"
 import PrivateRoutes from "./routes/PrivateRoutes"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { onAuthStateChanged } from "firebase/auth"
+import { loadUser } from "./redux/features/auth/authSlice"
+import { auth } from "./config/firebase"
 
 function App() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { user } = useSelector(state => state.auth)
+
+  useEffect(() => {
+    onAuthStateChanged(auth, currentUser => {
+      dispatch(loadUser(currentUser))
+    })
+
+    // eslint-disable-next-line
+  }, [])
+
   useEffect(() => {
     if (!user) {
       navigate(AllRoutesMap.signIn)

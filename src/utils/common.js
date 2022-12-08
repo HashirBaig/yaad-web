@@ -26,3 +26,11 @@ export const getSpinnerColor = color => {
   }
   return colorThemes[color]
 }
+
+export const getSortedData = res => {
+  if (!res) return []
+
+  const rawDocs = res?.docs?.map(doc => ({ ...doc?.data(), id: doc?.id }))
+  const data = rawDocs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  return data
+}

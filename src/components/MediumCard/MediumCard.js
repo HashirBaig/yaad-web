@@ -46,7 +46,7 @@ function MediumCard(props) {
 
   const toggleJournalEdit = () => {
     const updatedJournalData = journals.map(journal => {
-      if (journal._id === id) {
+      if (journal.id === id) {
         const { isContentEditable, ...rest } = journal
         const editedJournal = {
           isContentEditable: !isContentEditable,

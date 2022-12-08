@@ -5,7 +5,7 @@ import dayjs from "dayjs"
 import MediumCard from "../MediumCard"
 import { Spinner } from "../Loaders"
 
-function JournalList({ initSearch, isLoading }) {
+function JournalList({ isLoading, initSearch }) {
   const { journals } = useSelector(state => state.journal)
 
   const isScrollbarVisible = journals?.length > 4
@@ -24,17 +24,17 @@ function JournalList({ initSearch, isLoading }) {
       )}
       {!isLoading &&
         journals.length > 0 &&
-        journals?.map(({ message, createdAt, _id, isContentEditable, isEdited }, idx) => {
+        journals?.map(({ message, createdAt, id, isContentEditable, isEdited }, idx) => {
           const date = dayjs(new Date(createdAt)).format("DD-MM-YY")
           return (
             <MediumCard
               message={message}
               date={date}
-              id={_id}
+              id={id}
               createdAt={createdAt}
               isContentEditable={isContentEditable}
               isEdited={isEdited}
-              key={`journal-${_id}-${idx}`}
+              key={`journal-${id}-${idx}`}
               initSearch={() => initSearch()}
             />
           )

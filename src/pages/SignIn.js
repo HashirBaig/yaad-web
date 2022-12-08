@@ -21,7 +21,7 @@ function SignIn() {
 
   useEffect(() => {
     if (isError) {
-      console.log("Error >>> ", message)
+      console.log("error: ", message)
     }
 
     if (isSuccess && user) {
