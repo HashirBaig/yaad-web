@@ -2,9 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../../../config/firebase"
 
-// Get token from localStorage
-// const token = localStorage.token
-
 const intialState = {
   user: {},
   isLoading: false,

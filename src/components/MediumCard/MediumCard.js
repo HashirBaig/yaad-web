@@ -118,7 +118,7 @@ function MediumCard(props) {
       </div>
       <div className="flex justify-end">
         <p className="w-fit text-gray-500 font-extralight text-xs">
-          <TimeAgo date={new Date(createdAt)} />
+          <TimeAgo date={createdAt} />
         </p>
       </div>
     </div>

@@ -1,16 +1,24 @@
-import { collection, getDocs, addDoc, updateDoc, doc, query, where } from "firebase/firestore/lite"
+import { collection, getDocs, addDoc, updateDoc, doc, query, where, Timestamp } from "firebase/firestore/lite"
 import { db } from "../../../config/firebase"
-import { getSortedData } from "../../../utils/common"
+import { getSortedData, getFormattedData } from "../../../utils/common"
 
 const journalCollectionRef = collection(db, "journal")
+const streakCollectionRef = collection(db, "streak")
 
 //--- JOURNAL ---//
-export async function addJournal(data) {
+export async function addJournal({ message, userEmail }) {
+  const data = {
+    isDeleted: false,
+    isEdited: false,
+    createdBy: userEmail,
+    createdAt: Timestamp.fromDate(new Date()),
+    message,
+  }
   return await addDoc(journalCollectionRef, data)
 }
 
-export async function getAllJournalsByUser(user) {
-  const q1 = query(journalCollectionRef, where("isDeleted", "!=", true), where("createdBy", "==", user))
+export async function getAllJournalsByUser(userEmail) {
+  const q1 = query(journalCollectionRef, where("isDeleted", "!=", true), where("createdBy", "==", userEmail))
   const docs = await getDocs(q1)
   const data = getSortedData(docs)
   return data
@@ -30,6 +38,27 @@ export async function softDeleteJournal(id) {
 }
 
 //--- STREAK ---//
-export async function getStreakByUser() {
-  return ``
+async function getStreakByUser(userEmail) {
+  const q1 = query(streakCollectionRef, where("user", "==", userEmail), where("isBroken", "==", false))
+  const res = await getDocs(q1)
+  const data = getFormattedData(res)
+  return data[0]
 }
+
+async function createStreakByUser(userEmail) {
+  const data = {
+    user: userEmail,
+    isBroken: false,
+    createdAt: Timestamp.fromDate(new Date().toISOString()),
+    noOfDays: 1,
+  }
+
+  return await addDoc(streakCollectionRef, data)
+}
+
+const api = {
+  getStreakByUser,
+  createStreakByUser,
+}
+
+export default api

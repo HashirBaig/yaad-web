@@ -3,6 +3,9 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
 import { addJournal } from "../../redux/features/services/api"
 import { useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
+import { createStreakByUser } from "../../redux/features/streak/streakSlice"
+import { today, getFormattedYesterday, getFormattedDayBeforeYesterday } from "../../utils/common"
 
 const schema = yup.object().shape({
   message: yup.string(),
@@ -10,20 +13,26 @@ const schema = yup.object().shape({
 
 function JournalForm({ initSearch }) {
   const { user } = useSelector(state => state.auth)
+  const { journals } = useSelector(state => state.journal)
+  const dispatch = useDispatch()
 
   const onSubmit = async formData => {
     try {
       const data = {
-        isDeleted: false,
-        isEdited: false,
-        createdBy: user?.email,
-        createdAt: new Date().toISOString(),
+        userEmail: user?.email,
         ...formData,
       }
-
       reset()
       await addJournal(data)
       initSearch()
+
+      // Handle streak updates
+      // if already streak present, then check if new journal was entered today, yesterday
+      // the day before yesterday
+      console.log(journals[0])
+      dispatch(createStreakByUser(user?.email))
+
+      // Set streak updates
     } catch (error) {
       console.log(error)
     }

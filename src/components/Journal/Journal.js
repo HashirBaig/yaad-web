@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllJournalsByUser } from "../../redux/features/services/api"
 import { setJournals } from "../../redux/features/journal/journalSlice"
+import { reset, getStreakByUser } from "../../redux/features/streak/streakSlice"
 
 import JournalList from "../JournalList"
 import JournalForm from "../JournalForm"
@@ -15,11 +16,10 @@ function Journal() {
     try {
       setIsLoading(true)
       const res = await getAllJournalsByUser(user?.email)
-      // const streakRes = await getStreakByUser()
-      // const streak = streakRes?.data?.streak
+      dispatch(getStreakByUser(user?.email))
+      dispatch(reset())
       const data = dataPrep(res)
       dispatch(setJournals(data))
-      // dispatch(setStreak(streak))
     } catch (error) {
       console.log(error || error?.message)
       setIsLoading(false)
