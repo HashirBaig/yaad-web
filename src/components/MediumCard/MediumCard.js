@@ -131,6 +131,7 @@ MediumCard.porpTypes = {
   date: PorpTypes.string.isRequired,
   id: PorpTypes.string.isRequired,
   isContentEditable: PorpTypes.bool.isRequired,
+  initSearch: PorpTypes.func.isRequired,
 }
 
 export default MediumCard
