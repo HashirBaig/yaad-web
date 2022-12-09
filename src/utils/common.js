@@ -34,3 +34,7 @@ export const getSortedData = res => {
   const data = rawDocs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
   return data
 }
+
+export const getPreppedData = data => {
+  return data?.map(item => ({ isContentEditable: false, ...item }))
+}

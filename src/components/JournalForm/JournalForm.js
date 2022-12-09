@@ -1,8 +1,11 @@
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
-import { addJournal } from "../../redux/features/services/api"
-import { useSelector } from "react-redux"
+import { customAlphabet } from "nanoid"
+import { addJournal, getAllJournalsByUser } from "../../redux/features/services/api"
+import { useSelector, useDispatch } from "react-redux"
+import { setJournals } from "../../redux/features/journal/journalSlice"
+import { getPreppedData } from "../../utils/common"
 
 const schema = yup.object().shape({
   message: yup.string(),
@@ -10,6 +13,9 @@ const schema = yup.object().shape({
 
 function JournalForm({ initSearch }) {
   const { user } = useSelector(state => state.auth)
+  const { journals } = useSelector(state => state.journal)
+
+  const dispatch = useDispatch()
 
   const onSubmit = async formData => {
     try {
@@ -22,8 +28,22 @@ function JournalForm({ initSearch }) {
       }
 
       reset()
+
+      //--- OPTIMISTIC ROLLBACK ---//
+      const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)
+      const obj = {
+        journalId: nanoid,
+        isContentEditable: false,
+        ...data,
+      }
+      const newData = [obj, ...journals]
+      dispatch(setJournals(newData))
       await addJournal(data)
-      initSearch()
+
+      // Get lastest journal entries
+      const res = await getAllJournalsByUser(user?.email)
+      const preppedData = getPreppedData(res)
+      dispatch(setJournals(preppedData))
     } catch (error) {
       console.log(error)
     }
