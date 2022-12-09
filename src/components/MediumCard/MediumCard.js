@@ -9,19 +9,22 @@ import { TrashIcon, PencilAltIcon } from "@heroicons/react/outline"
 
 import { Spinner } from "../Loaders"
 
-import { softDeleteJournal, updateJournal } from "../../redux/features/services/api"
+import { softDeleteJournal, updateJournal, getAllJournalsByUser } from "../../redux/features/services/api"
 import { setJournals } from "../../redux/features/journal/journalSlice"
+import { getPreppedData } from "../../utils/common"
 
 const schema = yup.object().shape({
   message: yup.string(),
 })
 
 function MediumCard(props) {
-  const { message, date, id, createdAt, isContentEditable, initSearch } = props
+  const { message, date, id, createdAt, isContentEditable } = props
   const [isLoading, setIsLoading] = useState(false)
+  const [isEditLoading, setIsEditLoading] = useState(false)
   const dispatch = useDispatch()
 
   const { journals } = useSelector(state => state.journal)
+  const { user } = useSelector(state => state.auth)
 
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema),
@@ -31,11 +34,18 @@ function MediumCard(props) {
     },
   })
 
-  const handleOnClick = async () => {
+  const handleSoftDelete = async () => {
     try {
       setIsLoading(true)
+      //--- OPTIMISTIC UPDATE FOR SOFT DELETE ---//
+      const updatedData = journals?.filter(journal => journal?.id !== id)
+      dispatch(setJournals(updatedData))
       await softDeleteJournal(id)
-      initSearch()
+
+      // Get lastest journal entries
+      const res = await getAllJournalsByUser(user?.email)
+      const preppedData = getPreppedData(res)
+      dispatch(setJournals(preppedData))
     } catch (error) {
       setIsLoading(false)
       console.log(error)
@@ -61,12 +71,28 @@ function MediumCard(props) {
 
   const onSubmit = async formData => {
     try {
+      setIsEditLoading(true)
       const data = { id, ...formData }
-      await updateJournal(data)
+      // Toggle Edit Form
       toggleJournalEdit()
-      initSearch()
+
+      //--- OPTIMISTIC UPDATE FOR SOFT DELETE ---//
+      const updatedData = journals?.map(({ message, ...rest }) =>
+        rest?.id === id ? { message: data?.message, ...rest } : { message, ...rest }
+      )
+      dispatch(setJournals(updatedData))
+
+      await updateJournal(data)
+
+      // Get lastest journal entries
+      const res = await getAllJournalsByUser(user?.email)
+      const preppedData = getPreppedData(res)
+      dispatch(setJournals(preppedData))
     } catch (error) {
+      setIsEditLoading(false)
       console.log(error)
+    } finally {
+      setIsEditLoading(false)
     }
   }
 
@@ -84,7 +110,7 @@ function MediumCard(props) {
           {isLoading ? (
             <Spinner size={"sm"} color="danger" />
           ) : (
-            <div className="action-icon delete-icon" onClick={handleOnClick} title="Delete Entry">
+            <div className="action-icon delete-icon" onClick={handleSoftDelete} title="Delete Entry">
               <TrashIcon className="h-5 w-5" />
             </div>
           )}
@@ -106,9 +132,10 @@ function MediumCard(props) {
               </button>
               <button
                 type="submit"
+                disabled={isEditLoading}
                 className="bg-blue-400 hover:bg-blue-600 text-white rounded-lg py-1 px-4 text-sm font-medium transition duration-200 ease-out cursor-pointer"
               >
-                Edit
+                {isEditLoading ? <Spinner size={"xs"} color="light" /> : "Edit"}
               </button>
             </div>
           </form>
@@ -131,7 +158,6 @@ MediumCard.porpTypes = {
   date: PorpTypes.string.isRequired,
   id: PorpTypes.string.isRequired,
   isContentEditable: PorpTypes.bool.isRequired,
-  initSearch: PorpTypes.func.isRequired,
 }
 
 export default MediumCard
