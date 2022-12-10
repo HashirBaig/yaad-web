@@ -4,6 +4,7 @@ const dimensions = {
   md: "w-8 h-8",
   lg: "w-10 h-10",
   xl: "w-12 h-12",
+  "2xl": "w-14 h-14",
 }
 
 const colorThemes = {
@@ -11,6 +12,7 @@ const colorThemes = {
   danger: "fill-red-400",
   success: "fill-green-400",
   light: "fill-white",
+  dark: "fill-slate-900",
 }
 
 export const getSpinnerSize = size => {

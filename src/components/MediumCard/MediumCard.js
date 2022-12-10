@@ -97,20 +97,20 @@ function MediumCard(props) {
   }
 
   return (
-    <div className="border px-4 py-3 rounded-lg">
+    <div className="border border-slate-700 px-4 py-3 rounded-lg">
       <div className="flex items-center justify-between">
-        <p className="w-fit text-gray-500 font-extralight text-xs">{date}</p>
+        <p className="w-fit text-slate-500 font-extralight text-xs">{date}</p>
 
         <div className="flex ">
           {!isContentEditable && (
-            <div className="action-icon edit-icon" title="Edit Entry" onClick={toggleJournalEdit}>
+            <div className="btn-action btn-edit" title="Edit Entry" onClick={toggleJournalEdit}>
               <PencilAltIcon className="h-5 w-5" />
             </div>
           )}
           {isLoading ? (
             <Spinner size={"sm"} color="danger" />
           ) : (
-            <div className="action-icon delete-icon" onClick={handleSoftDelete} title="Delete Entry">
+            <div className="btn-action btn-delete" onClick={handleSoftDelete} title="Delete Entry">
               <TrashIcon className="h-5 w-5" />
             </div>
           )}
@@ -140,7 +140,9 @@ function MediumCard(props) {
             </div>
           </form>
         ) : (
-          <p onDoubleClick={toggleJournalEdit}>{message}</p>
+          <p onDoubleClick={toggleJournalEdit} className="text-slate-400">
+            {message}
+          </p>
         )}
       </div>
       <div className="flex justify-end">
