@@ -6,6 +6,7 @@ const dimensions = {
   md: "w-8 h-8",
   lg: "w-10 h-10",
   xl: "w-12 h-12",
+  "2xl": "w-14 h-14",
 }
 
 const colorThemes = {
@@ -13,6 +14,7 @@ const colorThemes = {
   danger: "fill-red-400",
   success: "fill-green-400",
   light: "fill-white",
+  dark: "fill-slate-900",
 }
 
 const date = new Date()
@@ -43,18 +45,6 @@ export const getSortedData = res => {
   return data
 }
 
-export const today = dayjs(new Date()).format("DD-MM-YYYY")
-
-export const getFormattedYesterday = () => {
-  let yesterday = new Date()
-  yesterday.setDate(date.getDate() - 1)
-  yesterday = dayjs(yesterday).format("DD-MM-YYYY")
-  return yesterday
-}
-
-export const getFormattedDayBeforeYesterday = () => {
-  let dayBeforeYesterday = new Date()
-  dayBeforeYesterday.setDate(date.getDate() - 2)
-  dayBeforeYesterday = dayjs(dayBeforeYesterday).format("DD-MM-YYYY")
-  return dayBeforeYesterday
+export const getPreppedData = data => {
+  return data?.map(item => ({ isContentEditable: false, ...item }))
 }

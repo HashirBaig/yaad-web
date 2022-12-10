@@ -7,6 +7,8 @@ import { reset, getStreakByUser } from "../../redux/features/streak/streakSlice"
 import JournalList from "../JournalList"
 import JournalForm from "../JournalForm"
 
+import { getPreppedData } from "../../utils/common"
+
 function Journal() {
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
@@ -16,9 +18,7 @@ function Journal() {
     try {
       setIsLoading(true)
       const res = await getAllJournalsByUser(user?.email)
-      dispatch(getStreakByUser(user?.email))
-      dispatch(reset())
-      const data = dataPrep(res)
+      const data = getPreppedData(res)
       dispatch(setJournals(data))
     } catch (error) {
       console.log(error || error?.message)
@@ -26,10 +26,6 @@ function Journal() {
     } finally {
       setIsLoading(false)
     }
-  }
-
-  const dataPrep = data => {
-    return data?.map(item => ({ isContentEditable: false, ...item }))
   }
 
   useEffect(() => {

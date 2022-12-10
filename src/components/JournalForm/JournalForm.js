@@ -1,11 +1,12 @@
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
-import { addJournal } from "../../redux/features/services/api"
-import { useSelector } from "react-redux"
-import { useDispatch } from "react-redux"
-import { createStreakByUser } from "../../redux/features/streak/streakSlice"
-import { today, getFormattedYesterday, getFormattedDayBeforeYesterday } from "../../utils/common"
+import { customAlphabet } from "nanoid"
+import { addJournal, getAllJournalsByUser } from "../../redux/features/services/api"
+import { useSelector, useDispatch } from "react-redux"
+import { setJournals } from "../../redux/features/journal/journalSlice"
+import { getPreppedData } from "../../utils/common"
+import { PaperAirplaneIcon } from "@heroicons/react/solid"
 
 const schema = yup.object().shape({
   message: yup.string(),
@@ -23,16 +24,22 @@ function JournalForm({ initSearch }) {
         ...formData,
       }
       reset()
+
+      //--- OPTIMISTIC ROLLBACK ---//
+      const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)
+      const obj = {
+        journalId: nanoid,
+        isContentEditable: false,
+        ...data,
+      }
+      const newData = [obj, ...journals]
+      dispatch(setJournals(newData))
       await addJournal(data)
-      initSearch()
 
-      // Handle streak updates
-      // if already streak present, then check if new journal was entered today, yesterday
-      // the day before yesterday
-      console.log(journals[0])
-      dispatch(createStreakByUser(user?.email))
-
-      // Set streak updates
+      // Get lastest journal entries
+      const res = await getAllJournalsByUser(user?.email)
+      const preppedData = getPreppedData(res)
+      dispatch(setJournals(preppedData))
     } catch (error) {
       console.log(error)
     }
@@ -50,8 +57,8 @@ function JournalForm({ initSearch }) {
     <div className="sticky bottom-0">
       <form className="journal-entry-form" onSubmit={handleSubmit(onSubmit)}>
         <input type="text" name="message" autoComplete="off" {...register("message")} />
-        <button className="btn hidden sm:block" type="submit">
-          Send
+        <button className="btn-send sm:hidden" type="submit">
+          <PaperAirplaneIcon className="h-8 w-8" />
         </button>
       </form>
     </div>
