@@ -18,7 +18,7 @@ function JournalList({ isLoading, initSearch }) {
           : `scrollbar-hide`
       } `}
     >
-      {isLoading && journals.length === 0 && <Spinner size={"lg"} />}
+      {isLoading && journals.length === 0 && <Spinner size={"lg"} color={"dark"} />}
       {!isLoading && journals.length === 0 && (
         <div className="min-h-full flex items-center justify-center">
           <p className="font-semibold text-sm italic text-gray-500">Write what's on your mind!</p>

@@ -12,7 +12,7 @@ const colorThemes = {
   danger: "fill-red-400",
   success: "fill-green-400",
   light: "fill-white",
-  dark: "fill-slate-900",
+  dark: "fill-slate-700",
 }
 
 export const getSpinnerSize = size => {
