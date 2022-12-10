@@ -6,6 +6,7 @@ import { addJournal, getAllJournalsByUser } from "../../redux/features/services/
 import { useSelector, useDispatch } from "react-redux"
 import { setJournals } from "../../redux/features/journal/journalSlice"
 import { getPreppedData } from "../../utils/common"
+import { PaperAirplaneIcon } from "@heroicons/react/solid"
 
 const schema = yup.object().shape({
   message: yup.string(),
@@ -61,8 +62,8 @@ function JournalForm({ initSearch }) {
     <div className="sticky bottom-0">
       <form className="journal-entry-form" onSubmit={handleSubmit(onSubmit)}>
         <input type="text" name="message" autoComplete="off" {...register("message")} />
-        <button className="btn hidden sm:block" type="submit">
-          Send
+        <button className="btn-send sm:hidden" type="submit">
+          <PaperAirplaneIcon className="h-8 w-8" />
         </button>
       </form>
     </div>
