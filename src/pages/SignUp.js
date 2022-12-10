@@ -52,7 +52,7 @@ function SignUp() {
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center">
-      <div className="w-[25rem] border px-4 py-3 rounded-lg">
+      <div className="w-[25rem] border border-slate-600 px-4 py-3 rounded-lg">
         <form className="space-y-5" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
             <label htmlFor="username">
