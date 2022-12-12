@@ -31,6 +31,10 @@ export async function softDeleteJournal(id) {
 }
 
 //--- STREAK ---//
+export async function createStreakByUser(data) {
+  return await addDoc(streakCollectionRef, data)
+}
+
 export async function getStreakByUser(user) {
   const q1 = query(streakCollectionRef, where("isBroken", "==", false), where("user", "==", user))
   const docs = await getDocs(q1)

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { getStreakByUser } from "../services/api"
+import { getStreakByUser, createStreakByUser } from "../services/api"
 
 const intialState = {
   streak: {},
@@ -12,6 +12,15 @@ const intialState = {
 export const getStreak = createAsyncThunk("streak/getStreak", async ({ userEmail }, thunkAPI) => {
   try {
     return await getStreakByUser(userEmail)
+  } catch (error) {
+    const message = error?.message || error
+    thunkAPI.rejectWithValue(message)
+  }
+})
+
+export const createStreak = createAsyncThunk("streak/createStreak", async (data, thunkAPI) => {
+  try {
+    return await createStreakByUser(data)
   } catch (error) {
     const message = error?.message || error
     thunkAPI.rejectWithValue(message)
@@ -34,6 +43,20 @@ const streakSlice = createSlice({
   },
   extraReducers: builder => {
     builder
+      .addCase(createStreak.pending, state => {
+        state.isLoading = true
+      })
+      .addCase(createStreak.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.streak = action.payload
+      })
+      .addCase(createStreak.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.streak = {}
+      })
       .addCase(getStreak.pending, state => {
         state.isLoading = true
       })

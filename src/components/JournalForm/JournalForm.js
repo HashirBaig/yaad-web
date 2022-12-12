@@ -4,9 +4,10 @@ import { useForm } from "react-hook-form"
 import { customAlphabet } from "nanoid"
 import { addJournal, getAllJournalsByUser } from "../../redux/features/services/api"
 import { useSelector, useDispatch } from "react-redux"
-import { setJournals } from "../../redux/features/journal/journalSlice"
 import { getPreppedData } from "../../utils/common"
 import { PaperAirplaneIcon } from "@heroicons/react/solid"
+import { setJournals } from "../../redux/features/journal/journalSlice"
+import { createStreak } from "../../redux/features/streak/streakSlice"
 
 const schema = yup.object().shape({
   message: yup.string(),
@@ -28,9 +29,16 @@ function JournalForm({ initSearch }) {
         ...formData,
       }
 
+      const streakData = {
+        isBroken: false,
+        user: user?.email,
+        createdAt: new Date().toISOString(),
+        noOfDays: 1,
+      }
+
       reset()
 
-      //--- OPTIMISTIC ROLLBACK ---//
+      //--- OPTIMISTIC UPDATE ---//
       const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)
       const obj = {
         journalId: nanoid,
@@ -45,6 +53,11 @@ function JournalForm({ initSearch }) {
       const res = await getAllJournalsByUser(user?.email)
       const preppedData = getPreppedData(res)
       dispatch(setJournals(preppedData))
+
+      // if streak already present, check for validity
+      // else create a new one
+      // Create Streak
+      dispatch(createStreak(streakData))
     } catch (error) {
       console.log(error)
     }
