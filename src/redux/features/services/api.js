@@ -3,6 +3,7 @@ import { db } from "../../../config/firebase"
 import { getSortedData } from "../../../utils/common"
 
 const journalCollectionRef = collection(db, "journal")
+const streakCollectionRef = collection(db, "streak")
 
 //--- JOURNAL ---//
 export async function addJournal(data) {
@@ -30,6 +31,9 @@ export async function softDeleteJournal(id) {
 }
 
 //--- STREAK ---//
-export async function getStreakByUser() {
-  return ``
+export async function getStreakByUser(user) {
+  const q1 = query(streakCollectionRef, where("isBroken", "==", false), where("user", "==", user))
+  const docs = await getDocs(q1)
+  const data = getSortedData(docs)
+  return data[0]
 }
