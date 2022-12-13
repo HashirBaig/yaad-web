@@ -1,3 +1,5 @@
+const dayjs = require("dayjs")
+
 const dimensions = {
   xs: "w-4 h-4",
   sm: "w-6 h-6",
@@ -39,4 +41,19 @@ export const getSortedData = res => {
 
 export const getPreppedData = data => {
   return data?.map(item => ({ isContentEditable: false, ...item }))
+}
+
+const date = new Date()
+export const getFormattedYesterday = () => {
+  let yesterday = new Date()
+  yesterday.setDate(date.getDate() - 1)
+  yesterday = dayjs(yesterday).format("DD-MM-YYYY")
+  return yesterday
+}
+
+export const getFormattedDayBeforeYesterday = () => {
+  let dayBeforeYesterday = new Date()
+  dayBeforeYesterday.setDate(date.getDate() - 2)
+  dayBeforeYesterday = dayjs(dayBeforeYesterday).format("DD-MM-YYYY")
+  return dayBeforeYesterday
 }

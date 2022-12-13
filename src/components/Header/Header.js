@@ -17,7 +17,7 @@ function Header() {
           <img className="h-12 w-12 rounded-md opacity-90" src="/assets/images/yaad-logo.png" alt="Yaad Logo" />
           <div className="hover:bg-slate-700 transition duration-150 ease-out flex items-center rounded-full p-1">
             <FireIcon className="h-5 w-5 text-amber-500" />
-            <span className="text-lg font-semibold text-gray-500">{streak}</span>
+            <span className="text-lg font-semibold text-gray-500">{streak?.noOfDays}</span>
           </div>
           <div className="flex space-x-2">
             <div onClick={toggleSignUpModal} title={"Logout"}>
