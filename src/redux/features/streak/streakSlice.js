@@ -52,7 +52,7 @@ const streakSlice = createSlice({
     setStreak: (state, action) => {
       state.streak = action.payload
     },
-    reset: state => {
+    resetStreakState: state => {
       state.isLoading = false
       state.isSuccess = false
       state.isError = false
@@ -67,6 +67,7 @@ const streakSlice = createSlice({
       .addCase(updateStreak.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
+        state.streak = action.payload
       })
       .addCase(updateStreak.rejected, (state, action) => {
         state.isLoading = false
@@ -119,5 +120,5 @@ const streakSlice = createSlice({
   },
 })
 
-export const { setStreak, reset } = streakSlice.actions
+export const { setStreak, resetStreakState } = streakSlice.actions
 export default streakSlice.reducer

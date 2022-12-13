@@ -6,7 +6,7 @@ import JournalList from "../JournalList"
 import JournalForm from "../JournalForm"
 
 import { setJournals } from "../../redux/features/journal/journalSlice"
-import { getStreak, reset } from "../../redux/features/streak/streakSlice"
+import { getStreak, resetStreakState } from "../../redux/features/streak/streakSlice"
 
 import { getPreppedData } from "../../utils/common"
 
@@ -22,7 +22,7 @@ function Journal() {
       const data = getPreppedData(res)
       dispatch(setJournals(data))
       dispatch(getStreak({ userEmail: user?.email }))
-      dispatch(reset())
+      dispatch(resetStreakState())
     } catch (error) {
       console.log(error || error?.message)
       setIsLoading(false)
