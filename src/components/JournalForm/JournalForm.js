@@ -56,6 +56,7 @@ function JournalForm({ initSearch }) {
       dispatch(setJournals(preppedData))
 
       // check for streak validity
+      // TODO: ADD OPTIMISTIC UPDATE FOR STREAKS FOR FASTER UI UPDATE
       const { id } = await getStreakByUser(user?.email)
       const { createdAt } = await getAllJournalsByUser(data?.createdBy, 1)
       const journalDate = dayjs(createdAt).format("DD-MM-YYYY")
