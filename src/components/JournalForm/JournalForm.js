@@ -7,7 +7,13 @@ import { addJournal, getAllJournalsByUser, getStreakByUser } from "../../redux/f
 import { useSelector, useDispatch } from "react-redux"
 import { PaperAirplaneIcon } from "@heroicons/react/solid"
 import { setJournals } from "../../redux/features/journal/journalSlice"
-import { createStreak, breakStreak, updateStreak, getStreak } from "../../redux/features/streak/streakSlice"
+import {
+  createStreak,
+  breakStreak,
+  updateStreak,
+  getStreak,
+  resetStreakState,
+} from "../../redux/features/streak/streakSlice"
 import { getPreppedData, getFormattedYesterday, getFormattedDayBeforeYesterday } from "../../utils/common"
 
 const schema = yup.object().shape({
@@ -62,7 +68,7 @@ function JournalForm({ initSearch }) {
       const journalDate = dayjs(createdAt).format("DD-MM-YYYY")
 
       if (journalDate === getFormattedYesterday()) {
-        dispatch(getStreak({ userEmail: user?.email }))
+        dispatch(updateStreak({ id }))
       }
 
       if (journalDate === getFormattedDayBeforeYesterday) {
@@ -70,7 +76,8 @@ function JournalForm({ initSearch }) {
         dispatch(createStreak(streakData))
       }
 
-      dispatch(updateStreak({ id }))
+      dispatch(getStreak({ userEmail: user?.email }))
+      dispatch(resetStreakState())
     } catch (error) {
       console.log(error)
     }
