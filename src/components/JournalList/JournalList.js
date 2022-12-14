@@ -14,7 +14,7 @@ function JournalList({ isLoading, initSearch }) {
     <div
       className={`w-full h-[545px]  md:h-[460px] space-y-2 py-3 px-4 ${
         isScrollbarVisible
-          ? `scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-800 scrollbar-thumb-rounded-full h-[545px] sm:h-[460px] overflow-y-scroll`
+          ? `scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-900 scrollbar-thumb-rounded-full h-[545px] sm:h-[460px] overflow-y-scroll`
           : `scrollbar-hide`
       } `}
     >
