@@ -54,19 +54,12 @@ function JournalForm({ initSearch }) {
       }
       const newData = [obj, ...journals]
       dispatch(setJournals(newData))
-      await addJournal(data)
-
-      // Get lastest journal entries
-      const res = await getAllJournalsByUser(user?.email)
-      const preppedData = getPreppedData(res)
-      dispatch(setJournals(preppedData))
 
       // check for streak validity
       // TODO: ADD OPTIMISTIC UPDATE FOR STREAKS FOR FASTER UI UPDATE
       const { id } = await getStreakByUser(user?.email)
       const { createdAt } = await getAllJournalsByUser(data?.createdBy, 1)
       const journalDate = dayjs(createdAt).format("DD-MM-YYYY")
-
       if (journalDate === getFormattedYesterday()) {
         dispatch(updateStreak({ id }))
       }
@@ -78,6 +71,14 @@ function JournalForm({ initSearch }) {
 
       dispatch(getStreak({ userEmail: user?.email }))
       dispatch(resetStreakState())
+
+      // Add journal
+      await addJournal(data)
+
+      // Get lastest journal entries
+      const res = await getAllJournalsByUser(user?.email)
+      const preppedData = getPreppedData(res)
+      dispatch(setJournals(preppedData))
     } catch (error) {
       console.log(error)
     }
